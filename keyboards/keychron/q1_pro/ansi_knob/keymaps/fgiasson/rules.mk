@@ -10,3 +10,6 @@ DYNAMIC_MACRO_ENABLE = yes
 
 # Ref: https://docs.qmk.fm/#/feature_tap_dance
 TAP_DANCE_ENABLE = yes
+
+# Ref: https://docs.qmk.fm/#/feature_mouse_keys
+MOUSEKEY_ENABLE = yes
