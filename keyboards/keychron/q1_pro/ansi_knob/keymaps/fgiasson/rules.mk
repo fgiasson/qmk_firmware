@@ -13,3 +13,6 @@ TAP_DANCE_ENABLE = yes
 
 # Ref: https://docs.qmk.fm/#/feature_mouse_keys
 MOUSEKEY_ENABLE = yes
+
+# Ref: https://getreuer.info/posts/keyboards/select-word/index.html
+SRC += features/select_word.c
