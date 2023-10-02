@@ -1,1 +1,4 @@
 #define TAPPING_TERM 145
+
+#define MK_KINETIC_SPEED 15
+#define MOUSEKEY_INTERVAL 7
