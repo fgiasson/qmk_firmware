@@ -16,6 +16,9 @@
 
 #include QMK_KEYBOARD_H
 
+#include "keymap_us_international.h"
+#include "sendstring_us_international.h"
+
 // Some useless macros to eventually delete
 enum custom_keycodes {
     VIM_SEL_QUOTE = SAFE_RANGE + 100,
@@ -105,8 +108,8 @@ enum layers{
   WIN_BASE,
   WIN_FN,
   MOUSE,
-  VIM_COMMAND,
-  VIM_INSERT
+  ACCENTS,
+  VIM
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -128,7 +131,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         │LShift          ││Z      ││X      ││C      ││V      ││B      ││N      ││M      ││,      ││.      ││/      ││RShift          ││Up     │
         └────────────────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└────────────────┘└───────┘
         ┌───────┐┌───────┐┌───────┐┌────────────────────────────────────────────────────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
-        │LCtrl  ││LAlt   ││LGui   ││Space                                               ││Vim Cmd││Fn     ││Vim Ins││Left   ││Down   ││Right  │
+        │LCtrl  ││LAlt   ││LGui   ││Space                                               ││Accents││Fn     ││Vim    ││Left   ││Down   ││Right  │
         └───────┘└───────┘└───────┘└────────────────────────────────────────────────────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
     */
 
@@ -138,7 +141,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     TD(TD_LBRC_LCBR),  TD(TD_RBRC_RCBR),  TD(TD_BACKSLASH_PIPE),            KC_PGDN,
         KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     TD(TD_SEMICOLON_COLON),  TD(TD_QUOTE_DQUOTE),            KC_ENT,             KC_HOME,
         SC_LSPO,            KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     TD(TD_COMMA_LT),  TD(TD_DOT_GT),   TD(TD_SLASH_QM),            SC_RSPC,  KC_UP,
-        KC_LCTL,  KC_LOPTN, KC_LCMMD,                               LT(MOUSE, KC_SPC),                                 MO(VIM_COMMAND),MO(MAC_FN),MO(VIM_INSERT),  KC_LEFT,  KC_DOWN,  KC_RGHT),
+        KC_LCTL,  KC_LOPTN, KC_LCMMD,                               LT(MOUSE, KC_SPC),                                 MO(ACCENTS),MO(MAC_FN),MO(VIM),  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [MAC_FN] = LAYOUT_ansi_82(
         KC_TRNS,  KC_BRID,  KC_BRIU,  KC_MCTL,  KC_LPAD,  RGB_VAD,  RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_TRNS,            RGB_TOG,
@@ -175,7 +178,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     KC_LBRC,  KC_RBRC,  KC_BSLS,            KC_PGDN,
         KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     KC_SCLN,  KC_QUOT,            KC_ENT,             KC_HOME,
         SC_LSPO,            KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     KC_COMM,  KC_DOT,   KC_SLSH,            SC_RSPC,  KC_UP,
-        KC_LCTL,  KC_LGUI,  KC_LALT,                                KC_SPC,                                  MO(VIM_COMMAND), MO(WIN_FN),MO(VIM_INSERT),  KC_LEFT,  KC_DOWN,  KC_RGHT),
+        KC_LCTL,  KC_LGUI,  KC_LALT,                                KC_SPC,                                  MO(ACCENTS), MO(WIN_FN),MO(VIM),  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     [WIN_FN] = LAYOUT_ansi_82(
         KC_TRNS,  KC_BRID,  KC_BRIU,  KC_TASK,  KC_FILE,  RGB_VAD,  RGB_VAI,  KC_MPRV,  KC_MPLY,  KC_MNXT,  KC_MUTE,  KC_VOLD,  KC_VOLU,  KC_TRNS,            RGB_TOG,
@@ -214,18 +217,63 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,                               XXXXXXX,                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX),
 
-    [VIM_COMMAND] = LAYOUT_ansi_82(
-        KC_ESC,   KC_C,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            KC_MUTE,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
-        XXXXXXX,  VIM_SEL_QUOTE,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,                               KC_SPC,                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX),
 
-    [VIM_INSERT] = LAYOUT_ansi_82(
-        KC_ESC,   KC_I,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            RGB_TOG,
+    /*
+        Note: this layer only works when using the US International keybord
+
+        ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
+        │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       │
+        └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
+        ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
+        │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       │
+        └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
+        ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
+        │       ││       ││       ││´ (e)  ││       ││       ││       ││       ││¨ (i)  ││       ││       ││       ││       ││       ││       │
+        └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
+        ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌────────────────┐┌───────┐
+        │       ││` (a)  ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││                ││       │
+        └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└────────────────┘└───────┘
+        ┌────────────────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌────────────────┐
+        │                ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││                │
+        └────────────────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└────────────────┘
+        ┌───────┐┌───────┐┌───────┐┌────────────────────────────────────────────────────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
+        │       ││       ││       ││                                                    ││       ││       ││       ││       ││       ││       │
+        └───────┘└───────┘└───────┘└────────────────────────────────────────────────────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
+    */
+
+    [ACCENTS] = LAYOUT_ansi_82(
+        XXXXXXX,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
-        XXXXXXX,  VIM_SEL_QUOTE_I,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  US_ACUT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  US_DIAE,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  US_DGRV,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,                               XXXXXXX,                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX),
+
+    /*
+        ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
+        │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       │
+        └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
+        ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
+        │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       │
+        └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
+        ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
+        │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       │
+        └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
+        ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌────────────────┐┌───────┐
+        │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││                ││       │
+        └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└────────────────┘└───────┘
+        ┌────────────────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌────────────────┐
+        │                ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││                │
+        └────────────────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└────────────────┘
+        ┌───────┐┌───────┐┌───────┐┌────────────────────────────────────────────────────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
+        │       ││       ││       ││                                                    ││       ││       ││       ││       ││       ││       │
+        └───────┘└───────┘└───────┘└────────────────────────────────────────────────────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
+    */
+
+    [VIM] = LAYOUT_ansi_82(
+        KC_ESC,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            RGB_TOG,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,                               KC_SPC,                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX)
@@ -239,6 +287,7 @@ const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
     [WIN_BASE] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
     [WIN_FN] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)},
     [MOUSE] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [VIM_COMMAND] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
-    [VIM_INSERT] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)}
+    [ACCENTS] = {ENCODER_CCW_CW(KC_VOLD, KC_VOLU)},
+    [VIM] = {ENCODER_CCW_CW(RGB_VAD, RGB_VAI)}
 };
+#endif // ENCODER_MAP_ENABLE
