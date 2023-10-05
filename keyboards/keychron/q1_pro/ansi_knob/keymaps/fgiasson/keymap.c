@@ -20,7 +20,7 @@
 // Some useless macros to eventually delete
 enum custom_keycodes {
     VIM_SEL_QUOTE = SAFE_RANGE + 100,
-    VIM_SEL_QUOTE_I = SAFE_RANGE + 101,
+    VIM_SEL_DOUBLE_QUOTES = SAFE_RANGE + 101,
     SELWORD = SAFE_RANGE + 102,
 };
 
@@ -30,24 +30,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case VIM_SEL_QUOTE:
             if (record->event.pressed) {
-                SEND_STRING("l"); // Move one space to the right, this is to make sure that we can do it multiple times in a row
-                SEND_STRING("/'");
-                SEND_STRING(SS_TAP(X_ENTER));
-                SEND_STRING("lvt'd");
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING("vi'"); // enter VISUAL mode, select everything between the next quotes
             }
             break;
-        case VIM_SEL_QUOTE_I:
+        case VIM_SEL_DOUBLE_QUOTES:
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
-                SEND_STRING("l"); // Move one space to the right, this is to make sure that we can do it multiple times in a row
-                SEND_STRING("/'");
-                SEND_STRING(SS_TAP(X_ENTER));
-                SEND_STRING("lvt'di");
+                SEND_STRING("vi\""); // enter VISUAL mode, select everything between the next quotes
             }
             break;
     }
     return true;
 };
+
+   // test      'est'
 
 
 // Some type dances for the party
@@ -275,8 +272,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            RGB_TOG,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_DOUBLE_QUOTES, VIM_SEL_QUOTE,  XXXXXXX,  XXXXXXX,
+        KC_LSFT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_RSFT,  XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,                               KC_SPC,                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX)
 
 };
