@@ -19,9 +19,13 @@
 
 // Some useless macros to eventually delete
 enum custom_keycodes {
-    VIM_SEL_QUOTE = SAFE_RANGE + 100,
-    VIM_SEL_DOUBLE_QUOTES = SAFE_RANGE + 101,
-    SELWORD = SAFE_RANGE + 102,
+    SELWORD = SAFE_RANGE + 100,
+    VIM_SEL_QUOTE = SAFE_RANGE + 101,
+    VIM_SEL_DOUBLE_QUOTES = SAFE_RANGE + 102,
+    VIM_SEL_PARENTHESES = SAFE_RANGE + 103,
+    VIM_SEL_BRACKETS = SAFE_RANGE + 104,
+    VIM_SEL_CURLY_BRACKETS = SAFE_RANGE + 105,
+    VIM_SEL_ANGLE_BRACKETS = SAFE_RANGE + 106,
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -40,12 +44,33 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING("vi\""); // enter VISUAL mode, select everything between the next quotes
             }
             break;
+        case VIM_SEL_PARENTHESES:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING("vi("); // enter VISUAL mode, select everything between the next quotes
+            }
+            break;
+        case VIM_SEL_BRACKETS:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING("vi["); // enter VISUAL mode, select everything between the next quotes
+            }
+            break;
+        case VIM_SEL_CURLY_BRACKETS:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING("vi{"); // enter VISUAL mode, select everything between the next quotes
+            }
+            break;
+        case VIM_SEL_ANGLE_BRACKETS:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING("vi<"); // enter VISUAL mode, select everything between the next quotes
+            }
+            break;
     }
     return true;
 };
-
-   // test      'est'
-
 
 // Some type dances for the party
 // Tap Dance declarations
@@ -212,8 +237,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_MS_BTN1,  KC_MS_BTN2,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_MS_LEFT,  KC_MS_DOWN,  KC_MS_UP,  KC_MS_RIGHT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,                               XXXXXXX,                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX),
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_MS_UP,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,                               XXXXXXX,                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_MS_LEFT,  KC_MS_DOWN,  KC_MS_RIGHT),
 
 
     /*
@@ -252,16 +277,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       │
         └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
         ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
-        │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       │
+        │       ││       ││       ││       ││       ││       ││       ││       ││       ││ SEL ( ││       ││       ││       ││       ││       │
         └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
         ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
-        │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       │
+        │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││ SEL [ ││ SEL { ││       ││       │
         └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
         ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌────────────────┐┌───────┐
-        │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││                ││       │
+        │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││ SEL " ││ SEL ' ││                ││       │
         └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└────────────────┘└───────┘
         ┌────────────────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌────────────────┐
-        │                ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││                │
+        │                ││       ││       ││       ││       ││       ││       ││       ││ SEL < ││       ││       ││       ││                │
         └────────────────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└────────────────┘
         ┌───────┐┌───────┐┌───────┐┌────────────────────────────────────────────────────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
         │       ││       ││       ││                                                    ││       ││       ││       ││       ││       ││       │
@@ -270,10 +295,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [VIM] = LAYOUT_ansi_82(
         KC_ESC,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            RGB_TOG,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_PARENTHESES,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_BRACKETS,  VIM_SEL_CURLY_BRACKETS,  XXXXXXX,            XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_DOUBLE_QUOTES, VIM_SEL_QUOTE,  XXXXXXX,  XXXXXXX,
-        KC_LSFT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_RSFT,  XXXXXXX,
+        KC_LSFT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_ANGLE_BRACKETS,  XXXXXXX,  XXXXXXX,  KC_RSFT,  XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,                               KC_SPC,                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX)
 
 };
