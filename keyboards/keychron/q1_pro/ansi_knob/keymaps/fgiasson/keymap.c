@@ -26,12 +26,47 @@ enum custom_keycodes {
     VIM_SEL_BRACKETS = SAFE_RANGE + 104,
     VIM_SEL_CURLY_BRACKETS = SAFE_RANGE + 105,
     VIM_SEL_ANGLE_BRACKETS = SAFE_RANGE + 106,
+    VIM_MOVE_WINDOW_SWITCH = SAFE_RANGE + 107,
+    VIM_SPLIT_WINDOW_HORIZONTALLY = SAFE_RANGE + 108,
+    VIM_SPLIT_WINDOW_VERTICALLY = SAFE_RANGE + 109,
+    VIM_WINDOW_QUIT = SAFE_RANGE + 110,
+    VIM_WINDOW_CLOSE_OTHERS = SAFE_RANGE + 111,
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_select_word(keycode, record, SELWORD)) { return false; }
 
     switch (keycode) {
+        case VIM_MOVE_WINDOW_SWITCH:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("w"));
+                SEND_STRING("w");
+            }
+            break;
+        case VIM_SPLIT_WINDOW_HORIZONTALLY:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("w"));
+                SEND_STRING("s");
+            }
+            break;
+        case VIM_SPLIT_WINDOW_VERTICALLY:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("w"));
+                SEND_STRING("v");
+            }
+            break;
+        case VIM_WINDOW_QUIT:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("w"));
+                SEND_STRING("q");
+            }
+            break;
+        case VIM_WINDOW_CLOSE_OTHERS:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("w"));
+                SEND_STRING("o");
+            }
+            break;
         case VIM_SEL_QUOTE:
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
@@ -162,9 +197,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,   KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5,    KC_F6,    KC_F7,    KC_F8,    KC_F9,    KC_F10,   KC_F11,   KC_F12,  KC_DEL,             KC_MUTE,
         KC_GRAVE,   TD(TD_ONE_EXCLAMATION),     TD(TD_TWO_AT),     TD(TD_THREE_HASH),     TD(TD_FOUR_DOLLAR),     TD(TD_FIVE_PERCENT),     TD(TD_SIX_CARET),     TD(TD_SEVEN_AMPERSAND),     TD(TD_EIGHT_ASTERISK),     TD(TD_NINE_OPENPAR),     TD(TD_ZERO_CLOSEPAR),     TD(TD_MINUS_UNDERSCORE),  TD(TD_PLUS_EQUAL),   KC_BACKSPACE,            KC_PGUP,
         KC_TAB,   KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,     TD(TD_LBRC_LCBR),  TD(TD_RBRC_RCBR),  TD(TD_BACKSLASH_PIPE),            KC_PGDN,
-        KC_CAPS,  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     TD(TD_SEMICOLON_COLON),  TD(TD_QUOTE_DQUOTE),            KC_ENT,             KC_HOME,
+        LT(MOUSE, KC_CAPS),  KC_A,     KC_S,     KC_D,     KC_F,     KC_G,     KC_H,     KC_J,     KC_K,     KC_L,     TD(TD_SEMICOLON_COLON),  TD(TD_QUOTE_DQUOTE),            KC_ENT,             KC_HOME,
         SC_LSPO,            KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,     KC_N,     KC_M,     TD(TD_COMMA_LT),  TD(TD_DOT_GT),   TD(TD_SLASH_QM),            SC_RSPC,  KC_UP,
-        KC_LCTL,  KC_LOPTN, KC_LCMMD,                               LT(MOUSE, KC_SPC),                                 MO(ACCENTS),MO(MAC_FN),MO(VIM),  KC_LEFT,  KC_DOWN,  KC_RGHT),
+        KC_LCTL,  KC_LOPTN, KC_LCMMD,                               KC_SPC,                                 MO(ACCENTS),MO(MAC_FN),MO(VIM),  KC_LEFT,  KC_DOWN,  KC_RGHT),
 
     /*
         ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
@@ -219,7 +254,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       │
         └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
         ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
-        │       ││       ││       ││       ││       ││       ││       ││Btn 1  ││Btn 2  ││       ││       ││       ││       ││       ││       │
+        │       ││Btn 1  ││Btn 2  ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       │
         └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
         ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌────────────────┐┌───────┐
         │       ││       ││       ││       ││       ││       ││Left   ││Down   ││Up     ││Right  ││       ││       ││                ││       │
@@ -235,7 +270,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [MOUSE] = LAYOUT_ansi_82(
         KC_ESC,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            KC_MUTE,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_MS_BTN1,  KC_MS_BTN2,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  KC_MS_BTN1,  KC_MS_BTN2,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_MS_LEFT,  KC_MS_DOWN,  KC_MS_UP,  KC_MS_RIGHT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_MS_UP,
         XXXXXXX,  XXXXXXX,  XXXXXXX,                               XXXXXXX,                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  KC_MS_LEFT,  KC_MS_DOWN,  KC_MS_RIGHT),
@@ -280,26 +315,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         │       ││       ││       ││       ││       ││       ││       ││       ││       ││ SEL ( ││       ││       ││       ││       ││       │
         └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
         ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
-        │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││ SEL [ ││ SEL { ││       ││       │
+        │       ││ Win Q ││       ││       ││       ││       ││       ││       ││       ││ Win O ││       ││ SEL [ ││ SEL { ││       ││       │
         └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
         ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌────────────────┐┌───────┐
-        │       ││       ││       ││       ││       ││       ││       ││       ││       ││       ││ SEL " ││ SEL ' ││                ││       │
+        │       ││       ││       ││       ││       ││       ││ Win H ││       ││       ││       ││ SEL " ││ SEL ' ││                ││       │
         └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└────────────────┘└───────┘
         ┌────────────────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌────────────────┐
-        │                ││       ││       ││       ││       ││       ││       ││       ││ SEL < ││       ││       ││       ││                │
+        │                ││       ││       ││       ││ Win V ││       ││       ││       ││ SEL < ││       ││       ││       ││                │
         └────────────────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└────────────────┘
         ┌───────┐┌───────┐┌───────┐┌────────────────────────────────────────────────────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
-        │       ││       ││       ││                                                    ││       ││       ││       ││       ││       ││       │
+        │       ││       ││       ││                                                    ││       ││       ││       ││       ││       ││ Win W │
         └───────┘└───────┘└───────┘└────────────────────────────────────────────────────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
     */
 
     [VIM] = LAYOUT_ansi_82(
         KC_ESC,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            RGB_TOG,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_PARENTHESES,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_BRACKETS,  VIM_SEL_CURLY_BRACKETS,  XXXXXXX,            XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_DOUBLE_QUOTES, VIM_SEL_QUOTE,  XXXXXXX,  XXXXXXX,
-        KC_LSFT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_ANGLE_BRACKETS,  XXXXXXX,  XXXXXXX,  KC_RSFT,  XXXXXXX,
-        XXXXXXX,  XXXXXXX,  XXXXXXX,                               KC_SPC,                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX)
+        XXXXXXX,  VIM_WINDOW_QUIT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_WINDOW_CLOSE_OTHERS,  XXXXXXX,  VIM_SEL_BRACKETS,  VIM_SEL_CURLY_BRACKETS,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SPLIT_WINDOW_HORIZONTALLY,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_DOUBLE_QUOTES, VIM_SEL_QUOTE,  XXXXXXX,  XXXXXXX,
+        KC_LSFT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SPLIT_WINDOW_VERTICALLY,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_ANGLE_BRACKETS,  XXXXXXX,  XXXXXXX,  KC_RSFT,  XXXXXXX,
+        XXXXXXX,  XXXXXXX,  XXXXXXX,                               KC_SPC,                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_MOVE_WINDOW_SWITCH)
 
 };
 
