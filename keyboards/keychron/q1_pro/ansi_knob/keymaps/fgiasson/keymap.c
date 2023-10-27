@@ -32,6 +32,7 @@ enum custom_keycodes {
     VIM_WINDOW_QUIT = SAFE_RANGE + 110,
     VIM_WINDOW_CLOSE_OTHERS = SAFE_RANGE + 111,
     VIM_NORMAL_MODE_ENTER = SAFE_RANGE + 112,
+    EMACS_DISTRATION_FREE = SAFE_RANGE + 113,
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -108,8 +109,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
                 SEND_STRING("i"); // go in insert mode
-                SEND_STRING(SS_TAP(X_ENTER)) // press Enter
+                SEND_STRING(SS_TAP(X_ENTER)); // press Enter
                 SEND_STRING(SS_TAP(X_ESC)); // go back to NORMAL mode
+            }
+            break;
+        case EMACS_DISTRATION_FREE:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING(SS_TAP(X_SPACE));
+                SEND_STRING("wcC");
             }
             break;
     }
@@ -324,7 +332,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         │       ││       ││       ││       ││       ││       ││       ││       ││       ││ SEL ( ││       ││       ││       ││       ││       │
         └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
         ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐
-        │       ││ Win Q ││       ││       ││       ││       ││       ││       ││       ││ Win O ││       ││ SEL [ ││ SEL { ││       ││       │
+        │       ││ Win Q ││D. Free││       ││       ││       ││       ││       ││       ││ Win O ││       ││ SEL [ ││ SEL { ││       ││       │
         └───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘└───────┘
         ┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌───────┐┌────────────────┐┌───────┐
         │       ││       ││       ││       ││       ││       ││ Win H ││       ││       ││       ││ SEL " ││ SEL ' ││ Enter (Normal) ││       │
@@ -340,7 +348,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [VIM] = LAYOUT_ansi_82(
         KC_ESC,   XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            RGB_TOG,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_PARENTHESES,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,            XXXXXXX,
-        XXXXXXX,  VIM_WINDOW_QUIT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_WINDOW_CLOSE_OTHERS,  XXXXXXX,  VIM_SEL_BRACKETS,  VIM_SEL_CURLY_BRACKETS,  XXXXXXX,            XXXXXXX,
+        XXXXXXX,  VIM_WINDOW_QUIT,  EMACS_DISTRATION_FREE,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_WINDOW_CLOSE_OTHERS,  XXXXXXX,  VIM_SEL_BRACKETS,  VIM_SEL_CURLY_BRACKETS,  XXXXXXX,            XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SPLIT_WINDOW_HORIZONTALLY,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_DOUBLE_QUOTES, VIM_SEL_QUOTE,  VIM_NORMAL_MODE_ENTER,  XXXXXXX,
         KC_LSFT,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SPLIT_WINDOW_VERTICALLY,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_SEL_ANGLE_BRACKETS,  XXXXXXX,  XXXXXXX,  KC_RSFT,  XXXXXXX,
         XXXXXXX,  XXXXXXX,  XXXXXXX,                               KC_SPC,                                  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  XXXXXXX,  VIM_MOVE_WINDOW_SWITCH)
