@@ -17,7 +17,7 @@ t 2015-2023 Jack Humbert
 
 #include QMK_KEYBOARD_H
 
-enum planck_layers { _QWERTY, _COLEMAK, _DVORAK, _LOWER, _RAISE, _PLOVER, _ADJUST, _EMACS };
+enum planck_layers { _QWERTY, _COLEMAK, _DVORAK, _LOWER, _RAISE, _PLOVER, /*_ADJUST*/, _EMACS };
 
 enum planck_keycodes { QWERTY = SAFE_RANGE, COLEMAK, DVORAK, PLOVER, BACKLIT, EXT_PLV };
 
@@ -174,12 +174,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |      |      |      |      |      |             |      |      |      |      |      |
  * `-----------------------------------------------------------------------------------'
  */
-[_ADJUST] = LAYOUT_planck_grid(
-    _______, QK_BOOT, DB_TOGG, RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, KC_DEL ,
-    _______, EE_CLR,  MU_NEXT, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  COLEMAK, DVORAK,  PLOVER,  _______,
-    _______, AU_PREV, AU_NEXT, MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
-)
+/* [_ADJUST] = LAYOUT_planck_grid( */
+/*     _______, QK_BOOT, DB_TOGG, RGB_TOG, RGB_MOD, RGB_HUI, RGB_HUD, RGB_SAI, RGB_SAD, RGB_VAI, RGB_VAD, KC_DEL , */
+/*     _______, EE_CLR,  MU_NEXT, AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY,  COLEMAK, DVORAK,  PLOVER,  _______, */
+/*     _______, AU_PREV, AU_NEXT, MU_ON,   MU_OFF,  MI_ON,   MI_OFF,  _______, _______, _______, _______, _______, */
+/*     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______ */
+/*                                ), */
 
 
 /* Emacs (Lower + Raise)
@@ -200,35 +200,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                _______, _______, _______, EMACS_DAP_CONTINUE, VIM_SPLIT_WINDOW_VERTICALLY, EMACS_DAP_TOGGLE_BREAKPOINT, EMACS_DAP_NEXT, _______, _______, _______, _______, VIM_NORMAL_MODE_ENTER,
                                _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 )
-
-
-
-
-    /* VIM_SEL_QUOTE = SAFE_RANGE + 101, */
-    /* VIM_SEL_DOUBLE_QUOTES = SAFE_RANGE + 102, */
-    /* VIM_SEL_PARENTHESES = SAFE_RANGE + 103, */
-    /* VIM_SEL_BRACKETS = SAFE_RANGE + 104, */
-    /* VIM_SEL_CURLY_BRACKETS = SAFE_RANGE + 105, */
-    /* VIM_SEL_ANGLE_BRACKETS = SAFE_RANGE + 106, */
-    /* VIM_MOVE_WINDOW_SWITCH = SAFE_RANGE + 107, */
-    /* VIM_SPLIT_WINDOW_HORIZONTALLY = SAFE_RANGE + 108, */
-    /* VIM_SPLIT_WINDOW_VERTICALLY = SAFE_RANGE + 109, */
-    /* VIM_WINDOW_QUIT = SAFE_RANGE + 110, */
-    /* VIM_WINDOW_CLOSE_OTHERS = SAFE_RANGE + 111, */
-    /* VIM_NORMAL_MODE_ENTER = SAFE_RANGE + 112, */
-    /* EMACS_DISTRATION_FREE = SAFE_RANGE + 113, */
-    /* EMACS_SWAP_BUFFERS = SAFE_RANGE + 114, */
-    /* ORG_INSERT_DATE = SAFE_RANGE + 115, */
-    /* ORG_INSERT_PAGE_REF = SAFE_RANGE + 116, */
-    /* EMACS_DAP_START_DEBUGGER = SAFE_RANGE + 117, */
-    /* EMACS_DAP_CONTINUE = SAFE_RANGE + 118, */
-    /* EMACS_DAP_TOGGLE_BREAKPOINT = SAFE_RANGE + 119, */
-    /* EMACS_DAP_NEXT = SAFE_RANGE + 120, */
-    /* EMACS_DAP_DISCONNECT = SAFE_RANGE + 121, */
-    /* EMACS_DAP_STEP_OUT = SAFE_RANGE + 122, */
-    /* EMACS_DAP_STEP_IN = SAFE_RANGE + 123, */
-
-
 
 };
 /* clang-format on */
