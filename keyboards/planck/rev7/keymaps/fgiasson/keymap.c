@@ -1,4 +1,5 @@
-/* Copyright 2015-2023 Jack Humbert
+/* Copyrigh
+t 2015-2023 Jack Humbert
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,12 +17,39 @@
 
 #include QMK_KEYBOARD_H
 
-enum planck_layers { _QWERTY, _COLEMAK, _DVORAK, _LOWER, _RAISE, _PLOVER, _ADJUST };
+enum planck_layers { _QWERTY, _COLEMAK, _DVORAK, _LOWER, _RAISE, _PLOVER, _ADJUST, _EMACS };
 
 enum planck_keycodes { QWERTY = SAFE_RANGE, COLEMAK, DVORAK, PLOVER, BACKLIT, EXT_PLV };
 
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
+
+
+enum custom_keycodes {
+    VIM_SEL_QUOTE = SAFE_RANGE + 101,
+    VIM_SEL_DOUBLE_QUOTES = SAFE_RANGE + 102,
+    VIM_SEL_PARENTHESES = SAFE_RANGE + 103,
+    VIM_SEL_BRACKETS = SAFE_RANGE + 104,
+    VIM_SEL_CURLY_BRACKETS = SAFE_RANGE + 105,
+    VIM_SEL_ANGLE_BRACKETS = SAFE_RANGE + 106,
+    VIM_MOVE_WINDOW_SWITCH = SAFE_RANGE + 107,
+    VIM_SPLIT_WINDOW_HORIZONTALLY = SAFE_RANGE + 108,
+    VIM_SPLIT_WINDOW_VERTICALLY = SAFE_RANGE + 109,
+    VIM_WINDOW_QUIT = SAFE_RANGE + 110,
+    VIM_WINDOW_CLOSE_OTHERS = SAFE_RANGE + 111,
+    VIM_NORMAL_MODE_ENTER = SAFE_RANGE + 112,
+    EMACS_DISTRATION_FREE = SAFE_RANGE + 113,
+    EMACS_SWAP_BUFFERS = SAFE_RANGE + 114,
+    ORG_INSERT_DATE = SAFE_RANGE + 115,
+    ORG_INSERT_PAGE_REF = SAFE_RANGE + 116,
+    EMACS_DAP_START_DEBUGGER = SAFE_RANGE + 117,
+    EMACS_DAP_CONTINUE = SAFE_RANGE + 118,
+    EMACS_DAP_TOGGLE_BREAKPOINT = SAFE_RANGE + 119,
+    EMACS_DAP_NEXT = SAFE_RANGE + 120,
+    EMACS_DAP_DISCONNECT = SAFE_RANGE + 121,
+    EMACS_DAP_STEP_OUT = SAFE_RANGE + 122,
+    EMACS_DAP_STEP_IN = SAFE_RANGE + 123,
+};
 
 /* clang-format off */
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -153,6 +181,55 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
 )
 
+
+/* Emacs (Lower + Raise)
+ *                      v------------------------RGB CONTROL--------------------v
+ * ,-----------------------------------------------------------------------------------.
+ * |      |W-Quit|D Free|      |      |      |      |      |+P Ref|      |      |KC_DEL|
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |S Buff|+ Date|      |      |SWinH |      |DAP D |      |      |      |
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |DAP C |SWinV |DAP B |DAP N |      |      |      |      |NM Ent|
+ * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |      |      |      |      |      |             |      |      |      |      |      |
+ * `-----------------------------------------------------------------------------------'
+ */
+[_EMACS] = LAYOUT_planck_grid(
+                               _______, VIM_WINDOW_QUIT, EMACS_DISTRATION_FREE, _______, _______, _______, _______, _______, _______, _______, _______, KC_DEL,
+                               _______, _______, EMACS_SWAP_BUFFERS, ORG_INSERT_DATE, _______, _______, VIM_SPLIT_WINDOW_HORIZONTALLY, _______, EMACS_DAP_DISCONNECT, _______, _______, _______,
+                               _______, _______, _______, EMACS_DAP_CONTINUE, VIM_SPLIT_WINDOW_VERTICALLY, EMACS_DAP_TOGGLE_BREAKPOINT, EMACS_DAP_NEXT, _______, _______, _______, _______, VIM_NORMAL_MODE_ENTER,
+                               _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
+)
+
+
+
+
+    /* VIM_SEL_QUOTE = SAFE_RANGE + 101, */
+    /* VIM_SEL_DOUBLE_QUOTES = SAFE_RANGE + 102, */
+    /* VIM_SEL_PARENTHESES = SAFE_RANGE + 103, */
+    /* VIM_SEL_BRACKETS = SAFE_RANGE + 104, */
+    /* VIM_SEL_CURLY_BRACKETS = SAFE_RANGE + 105, */
+    /* VIM_SEL_ANGLE_BRACKETS = SAFE_RANGE + 106, */
+    /* VIM_MOVE_WINDOW_SWITCH = SAFE_RANGE + 107, */
+    /* VIM_SPLIT_WINDOW_HORIZONTALLY = SAFE_RANGE + 108, */
+    /* VIM_SPLIT_WINDOW_VERTICALLY = SAFE_RANGE + 109, */
+    /* VIM_WINDOW_QUIT = SAFE_RANGE + 110, */
+    /* VIM_WINDOW_CLOSE_OTHERS = SAFE_RANGE + 111, */
+    /* VIM_NORMAL_MODE_ENTER = SAFE_RANGE + 112, */
+    /* EMACS_DISTRATION_FREE = SAFE_RANGE + 113, */
+    /* EMACS_SWAP_BUFFERS = SAFE_RANGE + 114, */
+    /* ORG_INSERT_DATE = SAFE_RANGE + 115, */
+    /* ORG_INSERT_PAGE_REF = SAFE_RANGE + 116, */
+    /* EMACS_DAP_START_DEBUGGER = SAFE_RANGE + 117, */
+    /* EMACS_DAP_CONTINUE = SAFE_RANGE + 118, */
+    /* EMACS_DAP_TOGGLE_BREAKPOINT = SAFE_RANGE + 119, */
+    /* EMACS_DAP_NEXT = SAFE_RANGE + 120, */
+    /* EMACS_DAP_DISCONNECT = SAFE_RANGE + 121, */
+    /* EMACS_DAP_STEP_OUT = SAFE_RANGE + 122, */
+    /* EMACS_DAP_STEP_IN = SAFE_RANGE + 123, */
+
+
+
 };
 /* clang-format on */
 
@@ -162,7 +239,7 @@ float plover_gb_song[][2] = SONG(PLOVER_GOODBYE_SOUND);
 #endif
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+    return update_tri_layer_state(state, _LOWER, _RAISE, /*_ADJUST*/ _EMACS);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -202,7 +279,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #endif
                 layer_off(_RAISE);
                 layer_off(_LOWER);
-                layer_off(_ADJUST);
+                /* layer_off(_ADJUST); */
+                layer_off(_EMACS);
                 layer_on(_PLOVER);
                 if (!eeconfig_is_enabled()) {
                     eeconfig_init();
@@ -221,6 +299,154 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 layer_off(_PLOVER);
             }
             return false;
+            break;
+        case VIM_MOVE_WINDOW_SWITCH:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("w"));
+                SEND_STRING("w");
+            }
+            break;
+        case VIM_SPLIT_WINDOW_HORIZONTALLY:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("w"));
+                SEND_STRING("s");
+            }
+            break;
+        case VIM_SPLIT_WINDOW_VERTICALLY:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("w"));
+                SEND_STRING("v");
+            }
+            break;
+        case VIM_WINDOW_QUIT:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("w"));
+                SEND_STRING("q");
+            }
+            break;
+        case VIM_WINDOW_CLOSE_OTHERS:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("w"));
+                SEND_STRING("o");
+            }
+            break;
+        case VIM_SEL_QUOTE:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING("vi'"); // enter VISUAL mode, select everything between the next quotes
+            }
+            break;
+        case VIM_SEL_DOUBLE_QUOTES:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING("vi\""); // enter VISUAL mode, select everything between the next quotes
+            }
+            break;
+        case VIM_SEL_PARENTHESES:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING("vi("); // enter VISUAL mode, select everything between the next quotes
+            }
+            break;
+        case VIM_SEL_BRACKETS:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING("vi["); // enter VISUAL mode, select everything between the next quotes
+            }
+            break;
+        case VIM_SEL_CURLY_BRACKETS:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING("vi{"); // enter VISUAL mode, select everything between the next quotes
+            }
+            break;
+        case VIM_SEL_ANGLE_BRACKETS:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING("vi<"); // enter VISUAL mode, select everything between the next quotes
+            }
+            break;
+        case VIM_NORMAL_MODE_ENTER:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING("i"); // go in insert mode
+                SEND_STRING(SS_TAP(X_ENTER)); // press Enter
+                SEND_STRING(SS_TAP(X_ESC)); // go back to NORMAL mode
+            }
+            break;
+        case EMACS_DISTRATION_FREE:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING(SS_TAP(X_SPACE));
+                SEND_STRING("wcC");
+            }
+            break;
+        case EMACS_SWAP_BUFFERS:
+            if (record->event.pressed) {
+                SEND_STRING(SS_LCTL("X"));
+                SEND_STRING("/");
+            }
+            break;
+        case ORG_INSERT_DATE:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING(",dt");
+            }
+            break;
+        case ORG_INSERT_PAGE_REF:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING("aori");
+            }
+            break;
+        case EMACS_DAP_START_DEBUGGER:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING(SS_TAP(X_SPACE));
+                SEND_STRING("di");
+            }
+            break;
+        case EMACS_DAP_CONTINUE:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING(SS_TAP(X_SPACE));
+                SEND_STRING("dc");
+            }
+            break;
+        case EMACS_DAP_TOGGLE_BREAKPOINT:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING(SS_TAP(X_SPACE));
+                SEND_STRING("dbb");
+            }
+            break;
+        case EMACS_DAP_NEXT:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING(SS_TAP(X_SPACE));
+                SEND_STRING("ds");
+            }
+            break;
+        case EMACS_DAP_DISCONNECT:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING(SS_TAP(X_SPACE));
+                SEND_STRING("da");
+            }
+            break;
+        case EMACS_DAP_STEP_OUT:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING(SS_TAP(X_SPACE));
+                SEND_STRING("do");
+            }
+            break;
+        case EMACS_DAP_STEP_IN:
+            if (record->event.pressed) {
+                SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
+                SEND_STRING(SS_TAP(X_SPACE));
+                SEND_STRING("di");
+            }
             break;
     }
     return true;
@@ -287,14 +513,16 @@ bool dip_switch_update_user(uint8_t index, bool active) {
                     PLAY_SONG(plover_song);
                 }
 #endif
-                layer_on(_ADJUST);
+                /* layer_on(_ADJUST); */
+                layer_on(_EMACS);
             } else {
 #ifdef AUDIO_ENABLE
                 if (play_sound) {
                     PLAY_SONG(plover_gb_song);
                 }
 #endif
-                layer_off(_ADJUST);
+                /* layer_off(_ADJUST); */
+                layer_off(_EMACS);
             }
 #ifdef AUDIO_ENABLE
             play_sound = true;
