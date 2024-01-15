@@ -17,7 +17,7 @@ t 2015-2023 Jack Humbert
 
 #include QMK_KEYBOARD_H
 
-enum planck_layers { _QWERTY, _COLEMAK, _DVORAK, _LOWER, _RAISE, _PLOVER, /*_ADJUST*/, _EMACS };
+enum planck_layers { _QWERTY, _COLEMAK, _DVORAK, _LOWER, _RAISE, _PLOVER, /*_ADJUST*/ _EMACS };
 
 enum planck_keycodes { QWERTY = SAFE_RANGE, COLEMAK, DVORAK, PLOVER, BACKLIT, EXT_PLV };
 
@@ -185,7 +185,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Emacs (Lower + Raise)
  *                      v------------------------RGB CONTROL--------------------v
  * ,-----------------------------------------------------------------------------------.
- * |      |W-Quit|D Free|      |      |      |      |      |+P Ref|      |      |KC_DEL|
+ * |      |W-Quit|D Free|      |      |      |      |      |DAP I |DAP O |+P Ref|KC_DEL|
  * |------+------+------+------+------+------+------+------+------+------+------+------|
  * |      |      |S Buff|+ Date|      |      |SWinH |      |DAP D |      |      |      |
  * |------+------+------+------+------+------+------+------+------+------+------+------|
@@ -195,11 +195,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------------------------------------------------'
  */
 [_EMACS] = LAYOUT_planck_grid(
-                               _______, VIM_WINDOW_QUIT, EMACS_DISTRATION_FREE, _______, _______, _______, _______, _______, _______, _______, _______, KC_DEL,
+                              _______, VIM_WINDOW_QUIT, EMACS_DISTRATION_FREE, _______, _______, _______, _______, _______, EMACS_DAP_STEP_IN, EMACS_DAP_STEP_OUT, ORG_INSERT_PAGE_REF, KC_DEL,
                                _______, _______, EMACS_SWAP_BUFFERS, ORG_INSERT_DATE, _______, _______, VIM_SPLIT_WINDOW_HORIZONTALLY, _______, EMACS_DAP_DISCONNECT, _______, _______, _______,
                                _______, _______, _______, EMACS_DAP_CONTINUE, VIM_SPLIT_WINDOW_VERTICALLY, EMACS_DAP_TOGGLE_BREAKPOINT, EMACS_DAP_NEXT, _______, _______, _______, _______, VIM_NORMAL_MODE_ENTER,
                                _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______
-)
+),
 
 };
 /* clang-format on */
@@ -367,7 +367,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case ORG_INSERT_PAGE_REF:
             if (record->event.pressed) {
                 SEND_STRING(SS_TAP(X_ESC)); // make sure we are in NORMAL mode
-                SEND_STRING("aori");
+                SEND_STRING(",ri");
             }
             break;
         case EMACS_DAP_START_DEBUGGER:
